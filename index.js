@@ -35,15 +35,19 @@ const validateInput = (input) => {
     const hasSymbol = /[!@#$%&*]/.test(input);
     return !(hasUpper || hasLower || hasSymbol);
 };
+let timerId;
 const animateTimer = (seconds) => {
-        let timer = seconds;
-        let timerId = setInterval(() => {
+    timerEl.textContent = '0 часов 0 минут 0 секунд';
+    let timer = seconds;
+    clearInterval(timerId);
+    timerId = setInterval(() => {
+        timerEl.textContent = formatTime(timer, units);
+        if (timer > 0) {
+            timer--;
             timerEl.textContent = formatTime(timer, units);
-            if (--timer < 0) {
-                timer = seconds;
-            }
-            if (!timer) clearInterval(timerId)
-        }, 1000,);
+        }
+        if (!timer) clearInterval(timerId)
+    }, 1000);
 };
 
 inputEl.addEventListener('input', () => {
@@ -57,3 +61,4 @@ buttonEl.addEventListener('click', () => {
     animateTimer(seconds)
     inputEl.value = '';
 });
+
